@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NZWalks.CustomActionFilters;
 using NZWalks.Data;
 using NZWalks.Models.Domain;
 using NZWalks.Models.Domain.DTO;
@@ -29,6 +30,7 @@ namespace NZWalks.Controllers
             var allRegions = await _regionRepository.ShowAllRegions();
             return Ok(_mapper.Map<IEnumerable<RegionDTO>>(allRegions));
         }
+
         [HttpGet]
         [Route("{id:Guid}")]
         public async Task<ActionResult> GetById([FromRoute] Guid id)
@@ -42,32 +44,35 @@ namespace NZWalks.Controllers
         }
 
         [HttpPost]
+        [ValidationModel]
         public async Task<ActionResult> CreateRegion([FromBody] AddRegionRequestDTO addRegionRequestDTO)
         {
-            var regionToCreate = _mapper.Map<Region>(addRegionRequestDTO);
+                var regionToCreate = _mapper.Map<Region>(addRegionRequestDTO);
 
-            regionToCreate = await _regionRepository.CreateRegion(regionToCreate);
+                regionToCreate = await _regionRepository.CreateRegion(regionToCreate);
 
-            var regionDto = _mapper.Map<RegionDTO>(regionToCreate);
+                var regionDto = _mapper.Map<RegionDTO>(regionToCreate);
 
-            return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
+                return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
         }
 
         [HttpPut]
         [Route("{id:Guid}")]
+        [ValidationModel]
         public async Task<ActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
         {
-            var regionToUpdate = _mapper.Map<Region>(updateRegionRequestDTO);
-            regionToUpdate = await _regionRepository.UpdateRegion(id, regionToUpdate);
-            if(regionToUpdate == null)
-            {
-                NotFound();
-            }
-            return Ok(_mapper.Map<RegionDTO>(regionToUpdate));
+                var regionToUpdate = _mapper.Map<Region>(updateRegionRequestDTO);
+                regionToUpdate = await _regionRepository.UpdateRegion(id, regionToUpdate);
+                if (regionToUpdate == null)
+                {
+                    NotFound();
+                }
+                return Ok(_mapper.Map<RegionDTO>(regionToUpdate));
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteRegion(Guid id)
+        [Route("{id:Guid}")]
+        public async Task<ActionResult> DeleteRegion([FromRoute] Guid id)
         {
             if(await _regionRepository.GetRegionById(id) == null)
             {

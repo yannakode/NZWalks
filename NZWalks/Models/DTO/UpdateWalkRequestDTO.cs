@@ -12,10 +12,13 @@ namespace NZWalks.Models.DTO
         [Required]
         [MaxLength(1000, ErrorMessage = "Description has to be a maximum of 1000 characters")]
         public string Description { get; set; }
+        [Required]
+        [Range(0, 50)]
         public double LengthInKm { get; set; }
         public string? WalkImageUrl { get; set; }
-
+        [Required]
         public Region Region { get; set; }
+        [Required]
         public Difficulty Difficulty { get; set; }
     }
 }
