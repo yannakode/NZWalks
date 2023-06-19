@@ -31,14 +31,6 @@ namespace NZWalks.Repository
             return walk;
         }
 
-        public async Task<bool?> DeleteWalk(Guid id)
-        {
-            var walkToDelete = await _context.walks.FirstOrDefaultAsync(w => w.Id == id);
-            _context.walks.Remove(walkToDelete);
-            _context.SaveChangesAsync();
-            return true;
-        }
-
         public async Task<Walk?> UpdateWalk(Guid id, Walk? walk)
         {
             var walkToUpdate = await _context.walks.FirstOrDefaultAsync(w => w.Id == id);
@@ -51,5 +43,13 @@ namespace NZWalks.Repository
             await _context.SaveChangesAsync();
             return walkToUpdate;
         }
+        public async Task<bool> DeleteWalk(Guid id)
+        {
+            var walkToDelete = await _context.walks.FirstOrDefaultAsync(w => w.Id == id);
+            _context.walks.Remove(walkToDelete);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

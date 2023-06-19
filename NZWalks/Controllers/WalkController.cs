@@ -23,7 +23,7 @@ namespace NZWalks.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            var walkList = await _walkRepository.ShowAllWalks();
+            var walkList = await _walkRepository.ShowAll();
             return Ok(_mapper.Map<WalkDTO>(walkList));
         }
         [HttpGet]
@@ -45,7 +45,7 @@ namespace NZWalks.Controllers
 
         [HttpPut]
         [Route("{id:Guid}")]
-        public async Task<ActionResult> UpdateWask(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
+        public async Task<ActionResult> UpdateWalk(Guid id, UpdateRegionRequestDTO updateRegionRequestDTO)
         {
             var walkToUpdate = _mapper.Map<Walk>(updateRegionRequestDTO);
             await _walkRepository.UpdateWalk(id, walkToUpdate);
@@ -54,6 +54,17 @@ namespace NZWalks.Controllers
                 NotFound();
             }
             return Ok(_mapper.Map<WalkDTO>(walkToUpdate));
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<bool>> DeleteWalk(Guid id)
+        {
+            if(await  _walkRepository.DeleteWalk(id) == null)
+            {
+               return NotFound();
+            }
+            await _walkRepository.DeleteWalk(id);
+            return true;
         }
     }
 }
