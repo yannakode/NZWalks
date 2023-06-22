@@ -17,22 +17,21 @@ namespace NZWalks.Repository
         public async Task<IEnumerable<Walk?>> ShowAll(string? filterOn = null, string? filterQuery = null, string? sortBy = null, 
             bool isAcending = true, int pageNumber = 1, int pageSize = 1000)
         {
-            var walks = _context.walks.Include("Difficulty").Include("Region").AsQueryable();
-
-            if(string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == null)
+            var walks = _context.walks.Include("Difficulty").Include("Walk").AsQueryable();
+            if(string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
             {
                 if(filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
                 {
-                    walks = walks.Where(w => w.Name.Contains(filterQuery));
+                    walks = walks.Where(x => x.Name.Contains(filterQuery));
                 }
             }
 
-            if(string.IsNullOrWhiteSpace(sortBy) == false)
+            if(string.IsNullOrWhiteSpace(sortBy) != false)
             {
                 if(sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
                 {
                     walks = isAcending ? walks.OrderBy(x => x.Name) : walks.OrderByDescending(x => x.Name);
-                }else if(sortBy.Equals("Length", StringComparison.OrdinalIgnoreCase))
+                }else if(sortBy.Equals("LengthInKm", StringComparison.OrdinalIgnoreCase))
                 {
                     walks = isAcending ? walks.OrderBy(x => x.LengthInKm) : walks.OrderByDescending(x => x.LengthInKm);
                 }
