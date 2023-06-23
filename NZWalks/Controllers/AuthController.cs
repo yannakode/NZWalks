@@ -1,10 +1,9 @@
-﻿using Azure.Identity;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.Models.DTO;
-using NZWalks.Repository;
 using NZWalks.Repository.Interface;
+using System.Reflection.Metadata.Ecma335;
 
 namespace NZWalks.Controllers
 {
@@ -23,30 +22,27 @@ namespace NZWalks.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerRequestDto)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO registerRequestDTO)
         {
             var identityUser = new IdentityUser
             {
-                UserName = registerRequestDto.UserName,
-                Email = registerRequestDto.UserName
+                UserName = registerRequestDTO.UserName,
+                Email = registerRequestDTO.UserName
             };
 
-            var identityResult = await userManager.CreateAsync(identityUser, registerRequestDto.Password);
-
-            if (identityResult.Succeeded)
+            var identityResult = await userManager.CreateAsync(identityUser, registerRequestDTO.Password);
+            if(identityResult.Succeeded)
             {
-                if(registerRequestDto.Roles != null && registerRequestDto.Roles.Any())
+                if (registerRequestDTO.Roles != null && registerRequestDTO.Roles.Any())
                 {
-                    identityResult = await userManager.AddToRolesAsync(identityUser, registerRequestDto.Roles);
-
+                    identityResult = await userManager.AddToRolesAsync(identityUser, registerRequestDTO.Roles);
                     if (identityResult.Succeeded)
                     {
-                        return Ok("User was registered! Please login");
+                        return Ok("User was registered!");
                     }
                 }
-                
-            }
-            return BadRequest("Something went wrong");
+            }         
+            return BadRequest("Something went wrong.");
         }
 
         [HttpPost]
@@ -55,7 +51,7 @@ namespace NZWalks.Controllers
         {
             var user = await userManager.FindByEmailAsync(loginRequestDTO.UserName);
 
-            if (user != null)
+            if(user != null)
             {
                 var checkPasswordResult = await userManager.CheckPasswordAsync(user, loginRequestDTO.Password);
 
@@ -69,12 +65,11 @@ namespace NZWalks.Controllers
 
                         var response = new LoginResponseDTO
                         {
-                            JwtToken = jwtToken
+                            JwtToken = jwtToken,
                         };
                         return Ok(response);
                     }
                 }
-                
             }
             return BadRequest("Username or password incorrect");
         }

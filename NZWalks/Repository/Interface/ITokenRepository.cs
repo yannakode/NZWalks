@@ -4,6 +4,6 @@ namespace NZWalks.Repository.Interface
 {
     public interface ITokenRepository
     {
-       string CreateJWTToken(IdentityUser user, List<string> roles);
+        string CreateJWTToken(IdentityUser identityUser, List<string> roles);
     }
 }

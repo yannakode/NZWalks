@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NZWalks.Data;
 
 #nullable disable
 
-namespace NZWalks.Migrations.AuthApplicationDb
+namespace NZWalks.Migrations.AuthDb
 {
-    [DbContext(typeof(AuthApplicationDbContext))]
-    partial class AuthApplicationDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AuthDbContext))]
+    [Migration("20230623003953_Creating auth database")]
+    partial class Creatingauthdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +54,15 @@ namespace NZWalks.Migrations.AuthApplicationDb
                     b.HasData(
                         new
                         {
-                            Id = "ef0f817e-b57f-4a58-9466-f8302c3260fc",
-                            ConcurrencyStamp = "ef0f817e-b57f-4a58-9466-f8302c3260fc",
+                            Id = "82dfe4de-89df-422d-85f6-e07c7ba153f6",
+                            ConcurrencyStamp = "82dfe4de-89df-422d-85f6-e07c7ba153f6",
                             Name = "Reader",
                             NormalizedName = "READER"
                         },
                         new
                         {
-                            Id = "938a0f35-36a5-4654-8ad3-7358fcfd735a",
-                            ConcurrencyStamp = "ef0f817e-b57f-4a58-9466-f8302c3260fc",
+                            Id = "c325ca67-14c5-4987-8d0d-eee6920ea7d2",
+                            ConcurrencyStamp = "c325ca67-14c5-4987-8d0d-eee6920ea7d2",
                             Name = "Writer",
                             NormalizedName = "WRITER"
                         });

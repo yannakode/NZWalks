@@ -4,17 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace NZWalks.Data
 {
-    public class AuthApplicationDbContext : IdentityDbContext
+    public class AuthDbContext : IdentityDbContext
     {
-        public AuthApplicationDbContext(DbContextOptions<AuthApplicationDbContext> options) : base(options)
+        public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
         {
-        }
 
+        }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            var readerRoleId = "ef0f817e-b57f-4a58-9466-f8302c3260fc";
-            var writerRoleId = "938a0f35-36a5-4654-8ad3-7358fcfd735a";
+
+            var readerRoleId = "82dfe4de-89df-422d-85f6-e07c7ba153f6";
+            var writerRoleId = "c325ca67-14c5-4987-8d0d-eee6920ea7d2";
+
             var roles = new List<IdentityRole>
             {
                 new IdentityRole
@@ -24,10 +26,11 @@ namespace NZWalks.Data
                     Name = "Reader",
                     NormalizedName = "Reader".ToUpper()
                 },
+
                 new IdentityRole
                 {
-                    Id = writerRoleId,
-                    ConcurrencyStamp = readerRoleId,
+                    Id= writerRoleId,
+                    ConcurrencyStamp= writerRoleId,
                     Name = "Writer",
                     NormalizedName = "Writer".ToUpper()
                 }

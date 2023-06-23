@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace NZWalks.Migrations.AuthApplicationDb
+namespace NZWalks.Migrations.AuthDb
 {
     /// <inheritdoc />
-    public partial class CreatingAuthDataBase : Migration
+    public partial class Creatingauthdatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -163,8 +163,8 @@ namespace NZWalks.Migrations.AuthApplicationDb
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "938a0f35-36a5-4654-8ad3-7358fcfd735a", "ef0f817e-b57f-4a58-9466-f8302c3260fc", "Writer", "WRITER" },
-                    { "ef0f817e-b57f-4a58-9466-f8302c3260fc", "ef0f817e-b57f-4a58-9466-f8302c3260fc", "Reader", "READER" }
+                    { "82dfe4de-89df-422d-85f6-e07c7ba153f6", "82dfe4de-89df-422d-85f6-e07c7ba153f6", "Reader", "READER" },
+                    { "c325ca67-14c5-4987-8d0d-eee6920ea7d2", "c325ca67-14c5-4987-8d0d-eee6920ea7d2", "Writer", "WRITER" }
                 });
 
             migrationBuilder.CreateIndex(
