@@ -7,7 +7,7 @@ namespace NZWalks.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ImageController : Controller
+    public class ImageController : ControllerBase
     {
         private readonly IImageRepository _imageRepository;
 
@@ -18,43 +18,39 @@ namespace NZWalks.Controllers
 
         [HttpPost]
         [Route("Upload")]
-        public async Task<ActionResult> Upload([FromForm] ImageRequestUploadDTO requestImage)
+        public async Task<IActionResult> Upload([FromForm] ImageUploadRequestDTO uploadRequest)
         {
-            ValidateFileUpload(requestImage);
+            ValidateFileUpload(uploadRequest);
 
             if(ModelState.IsValid)
             {
-                var ImageDomainModel = new Image
+                var imageDomainModel = new Image
                 {
-                    File = requestImage.File,
-                    FileExtension = Path.GetExtension(requestImage.File.FileName),
-                    FileSizeInBytes = requestImage.File.Length,
-                    FileName = requestImage.FileName,
-                    FileDescription = requestImage.FileDescription
-
+                    File = uploadRequest.File,
+                    FileDescription = uploadRequest.FileDescription,
+                    FileExtension = Path.GetExtension(uploadRequest.File.FileName),
+                    FileSizeInBytes = uploadRequest.File.Length
                 };
 
-                await _imageRepository.Upload(ImageDomainModel);
+                _imageRepository.UploadImage(imageDomainModel);
 
-                return Ok(ImageDomainModel);
+                return Ok(imageDomainModel);
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
-        private void ValidateFileUpload(ImageRequestUploadDTO requestImage)
+        private void ValidateFileUpload(ImageUploadRequestDTO uploadRequest)
         {
-            var allowedExtensions = new string[]{".jpg", ".png", ".jpeg" };
+            var allowedExtension = new string[] {".jpg", ".png", ".jpeg"};
 
-            if(!allowedExtensions.Contains(requestImage.File.FileName))
+            if (!allowedExtension.Contains(uploadRequest.File.FileName))
             {
-                ModelState.AddModelError("file", "unsuported file extension");
+                ModelState.AddModelError("file", "Extension file are not allowed. Please, upload other");
             }
-
-            if(requestImage.File.Length > 10485760)
+            if(uploadRequest.File.Length > 10485760)
             {
-                ModelState.AddModelError("file", "File size more than 10MG, upload a smaller one");
+                ModelState.AddModelError("file", "Please upload a file smaller than 10MG");
             }
-
         }
     }
 }

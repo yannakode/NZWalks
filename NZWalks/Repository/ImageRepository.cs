@@ -1,4 +1,5 @@
-﻿using NZWalks.Data;
+﻿using Microsoft.AspNetCore.Hosting;
+using NZWalks.Data;
 using NZWalks.Models.Domain;
 using NZWalks.Repository.Interface;
 
@@ -6,29 +7,30 @@ namespace NZWalks.Repository
 {
     public class ImageRepository : IImageRepository
     {
-        private readonly IWebHostEnvironment _WebHostenvironment;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly ApplicationDbContext _DbContext;
 
-        public ImageRepository(IWebHostEnvironment webHostenvironment, IHttpContextAccessor httpContextAccessor, ApplicationDbContext applicationDbContext)
+        public ImageRepository(IWebHostEnvironment webHostEnvironment, IHttpContextAccessor contextAccessor, ApplicationDbContext DbContext)
         {
-            _WebHostenvironment = webHostenvironment;
-            _httpContextAccessor = httpContextAccessor;
-            _applicationDbContext = applicationDbContext;
+            _webHostEnvironment = webHostEnvironment;
+            _contextAccessor = contextAccessor;
+            _DbContext = DbContext;
         }
 
-        public async Task<Image> Upload(Image image)
+        public async Task<Image> UploadImage(Image image)
         {
-            var localFilePath = Path.Combine(_WebHostenvironment.ContentRootPath, "Images", $"{image.FileName}{image.FileExtension}");
+            var localFilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", $"{image.FileName}{image.FileExtension}");
 
             using var stream = new FileStream(localFilePath, FileMode.Create);
             await image.File.CopyToAsync(stream);
 
-            var urlFilePath = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}{_httpContextAccessor.HttpContext.Request.PathBase}/Images/{image.FileName}{image.FileExtension}";
+            var urlFilePath = $"{_contextAccessor.HttpContext.Request.Scheme}://{_contextAccessor.HttpContext.Request.Host}{_contextAccessor.HttpContext.Request.PathBase}/Images/{image.FileName}{image.FileExtension}";
+
             image.FilePath = urlFilePath;
 
-            await _applicationDbContext.images.AddAsync(image);
-            await _applicationDbContext.SaveChangesAsync();
+            await _DbContext.images.AddAsync(image);
+            await _DbContext.SaveChangesAsync();
 
             return image;
         }

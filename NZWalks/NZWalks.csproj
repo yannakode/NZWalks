@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\AuthApplicationDb\" />
+    <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>
