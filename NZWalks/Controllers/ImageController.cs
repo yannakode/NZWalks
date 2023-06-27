@@ -42,10 +42,11 @@ namespace NZWalks.Controllers
         private void ValidateFileUpload(ImageUploadRequestDTO uploadRequest)
         {
             var allowedExtension = new string[] {".jpg", ".png", ".jpeg"};
+            var extensionFile = Path.GetExtension(uploadRequest.File.FileName);
 
-            if (!allowedExtension.Contains(uploadRequest.File.FileName))
+            if (uploadRequest.File != null && !allowedExtension.Contains(extensionFile))
             {
-                ModelState.AddModelError("file", "Extension file are not allowed. Please, upload other");
+                ModelState.AddModelError("file", "Extension file are not allowed. Please, upload other one");
             }
             if(uploadRequest.File.Length > 10485760)
             {

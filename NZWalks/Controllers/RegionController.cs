@@ -10,6 +10,7 @@ using NZWalks.Models.DTO;
 using NZWalks.Repository;
 using NZWalks.Repository.Interface;
 using System.ComponentModel;
+using System.Text.Json;
 
 namespace NZWalks.Controllers
 {
@@ -20,11 +21,13 @@ namespace NZWalks.Controllers
     {
         public readonly IRegionRepository _regionRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<RegionController> logger;
 
-        public RegionController(IRegionRepository regionRepository, IMapper mapper)
+        public RegionController(IRegionRepository regionRepository, IMapper mapper, ILogger<RegionController> logger)
         {
             _regionRepository = regionRepository;
             _mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -32,8 +35,22 @@ namespace NZWalks.Controllers
         //[Authorize(Roles = "Reader")]
         public async Task<ActionResult> GetAllRegions()
         {
-            var allRegions = await _regionRepository.ShowAllRegions();
-            return Ok(_mapper.Map<IEnumerable<RegionDTO>>(allRegions));
+            try
+            {
+                throw new Exception("This is a custom expection");
+
+                var allRegions = await _regionRepository.ShowAllRegions();
+
+                logger.LogInformation($"Finished GetAllRegions request with data {JsonSerializer.Serialize(allRegions)}");
+
+                return Ok(_mapper.Map<IEnumerable<RegionDTO>>(allRegions));
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, ex.Message);
+                throw;
+            }
+            
         }
 
         [HttpGet]

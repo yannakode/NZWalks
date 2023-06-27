@@ -20,12 +20,14 @@ namespace NZWalks.Repository
 
         public async Task<Image> UploadImage(Image image)
         {
-            var localFilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", $"{image.FileName}{image.FileExtension}");
+            string uniqueString = Guid.NewGuid().ToString() + image.File.FileName;
+
+            var localFilePath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", uniqueString);
 
             using var stream = new FileStream(localFilePath, FileMode.Create);
             await image.File.CopyToAsync(stream);
 
-            var urlFilePath = $"{_contextAccessor.HttpContext.Request.Scheme}://{_contextAccessor.HttpContext.Request.Host}{_contextAccessor.HttpContext.Request.PathBase}/Images/{image.FileName}{image.FileExtension}";
+            var urlFilePath = $"{_contextAccessor.HttpContext.Request.Scheme}://{_contextAccessor.HttpContext.Request.Host}{_contextAccessor.HttpContext.Request.PathBase}/Images/{uniqueString}";
 
             image.FilePath = urlFilePath;
 
