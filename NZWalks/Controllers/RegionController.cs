@@ -30,7 +30,7 @@ namespace NZWalks.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Reader")]
+        //[Authorize(Roles = "Reader")]
         public async Task<ActionResult> GetAllRegions()
         {
              var allRegions = await _regionRepository.ShowAllRegions();
