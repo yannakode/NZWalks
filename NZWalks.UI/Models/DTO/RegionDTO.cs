@@ -8,6 +8,6 @@
 
         public string Name { get; set; }
 
-        public string? RegionImageUrl { get; set; }
+        public string? RegionImageURL { get; set; }
     }
 }
