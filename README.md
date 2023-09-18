@@ -22,33 +22,36 @@ NZWalks API is a backend API built to manage walks in different regions of New Z
 
 # API Endpoints
 
-#### AuthController
-POST /api/Auth/Register: Register a new user with the provided username, email, and password. Optionally, roles can be assigned to the user during registration.
+**AuthController**
 
-POST /api/Auth/Login: Authenticate a user with their email and password and return a JWT token for further API access.
+- **POST /api/Auth/Register:** Register a new user with the provided username, email, and password. Optionally, roles can be assigned to the user during registration.
 
-#### RegionController
-GET /api/Region: Get a list of all regions.
+- **POST /api/Auth/Login:** Authenticate a user with their email and password and return a JWT token for further API access.
 
-GET /api/Region/{id}: Get a specific region by its ID.
+**RegionController**
 
-POST /api/Region: Create a new region with the provided region data.
+- **GET /api/Region:** Get a list of all regions.
 
-PUT /api/Region/{id}: Update an existing region with the provided region data.
+- **GET /api/Region/{id}:** Get a specific region by its ID.
 
-DELETE /api/Region/{id}: Delete a region by its ID.
+- **POST /api/Region:** Create a new region with the provided region data.
 
-#### WalkController
-GET /api/Walk: Get a list of walks with optional filters and pagination.
+- **PUT /api/Region/{id}:** Update an existing region with the provided region data.
 
-GET /api/Walk/{id}: Get a specific walk by its ID.
+- **DELETE /api/Region/{id}:** Delete a region by its ID.
 
-POST /api/Walk: Create a new walk with the provided walk data.
+**WalkController**
 
-PUT /api/Walk/{id}: Update an existing walk with the provided walk data.
+- **GET /api/Walk:** Get a list of walks with optional filters and pagination.
 
-DELETE /api/Walk/{id}: Delete a walk by its ID.
+- **GET /api/Walk/{id}:** Get a specific walk by its ID.
 
-#### ImageController
-POST /api/Image/Upload: Upload an image file for a walk. The image will be validated based on its extension and file signature.
+- **POST /api/Walk:** Create a new walk with the provided walk data.
 
+- **PUT /api/Walk/{id}:** Update an existing walk with the provided walk data.
+
+- **DELETE /api/Walk/{id}:** Delete a walk by its ID.
+
+**ImageController**
+
+- **POST /api/Image/Upload:** Upload an image file for a walk. The image will be validated based on its extension and file signature.
