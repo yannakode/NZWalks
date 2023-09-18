@@ -24,20 +24,29 @@ NZWalks API is a backend API built to manage walks in different regions of New Z
 
 #### AuthController
 POST /api/Auth/Register: Register a new user with the provided username, email, and password. Optionally, roles can be assigned to the user during registration.
+
 POST /api/Auth/Login: Authenticate a user with their email and password and return a JWT token for further API access.
 
 #### RegionController
 GET /api/Region: Get a list of all regions.
+
 GET /api/Region/{id}: Get a specific region by its ID.
+
 POST /api/Region: Create a new region with the provided region data.
+
 PUT /api/Region/{id}: Update an existing region with the provided region data.
+
 DELETE /api/Region/{id}: Delete a region by its ID.
 
 #### WalkController
 GET /api/Walk: Get a list of walks with optional filters and pagination.
+
 GET /api/Walk/{id}: Get a specific walk by its ID.
+
 POST /api/Walk: Create a new walk with the provided walk data.
+
 PUT /api/Walk/{id}: Update an existing walk with the provided walk data.
+
 DELETE /api/Walk/{id}: Delete a walk by its ID.
 
 #### ImageController
